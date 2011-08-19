@@ -1,8 +1,9 @@
 class Wishlist < ActiveRecord::Base
   belongs_to :user
-  has_many :wished_products
+  has_many :wished_products, :dependent => :destroy
+  has_many :variants, :through => :wished_products
   before_create :set_access_hash
-
+    
   def to_param
     self.access_hash
   end
@@ -23,7 +24,7 @@ class Wishlist < ActiveRecord::Base
   end
 
   def is_public?
-    !self.is_private?
+    Spree::Wishlist::Config[:allow_public_lists] && !self.is_private?
   end
 
   private

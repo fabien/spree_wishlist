@@ -8,6 +8,7 @@ class WishedProductsController < Spree::BaseController
 
   create.before do
     @wished_product.wishlist = current_user.wishlist
+    @wished_product.notify   = Spree::Config[:track_inventory_levels] && @wished_product.variant.count_on_hand == 0
   end
 
   create.response do |wants|
@@ -16,9 +17,12 @@ class WishedProductsController < Spree::BaseController
 
   update.response do |wants|
     wants.html { redirect_to @wished_product.wishlist }
+    wants.js {
+      flash[:notice] = nil
+      render :js => "alert('#{t :updated_successfully}');"
+    }
   end
-
-  destroy.response do |wants|
+    destroy.response do |wants|
     wants.html { redirect_to @wished_product.wishlist }
   end
 end

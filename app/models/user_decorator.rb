@@ -1,5 +1,5 @@
 User.class_eval do
-  has_many :wishlists
+  has_many :wishlists, :dependent => :destroy
 
   def wishlist
     default_wishlist = self.wishlists.first(:conditions => ["is_default = ?", true]) 
@@ -8,4 +8,5 @@ User.class_eval do
     default_wishlist.update_attribute(:is_default, true) unless default_wishlist.is_default?
     default_wishlist
   end
+  
 end
