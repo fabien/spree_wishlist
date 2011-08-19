@@ -11,11 +11,11 @@ class WishlistAbility
     can :create, Wishlist
     # You can your own wishlists, and everyone cas see public ones
     can :show, Wishlist do |wishlist|
-      wishlist.user == user || wishlist.is_public? || user.has_role?('admin')
+      wishlist.user == user || wishlist.is_public?
     end
     # You can only change your own wishlist
     can [:show, :move, :update, :edit, :destroy], Wishlist do |wishlist|
-      wishlist.user == user || user.has_role?('admin')
+      wishlist.user == user
     end
 
     can :create, WishedProduct do |wished_product|
@@ -23,10 +23,10 @@ class WishlistAbility
     end
 
     can :show, WishedProduct do |wished_product|
-      wished_product.wishlist.user == user || wished_product.wishlist.is_public? || user.has_role?('admin')
+      wished_product.wishlist.user == user || wished_product.wishlist.is_public?
     end
     can [:index, :update, :delete], WishedProduct do |wished_product|
-      wished_product.wishlist.user == user || user.has_role?('admin')
+      wished_product.wishlist.user == user
     end
   end
 end
