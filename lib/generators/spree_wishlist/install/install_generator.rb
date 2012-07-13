@@ -3,7 +3,8 @@ module SpreeWishlist
     class InstallGenerator < Rails::Generators::Base
 
       def add_javascripts
-        append_file "app/assets/javascripts/store/all.js", "//= require store/spree_wishlist\n" 
+        append_file "app/assets/javascripts/store/all.js", "//= require store/spree_wishlist\n"
+        append_file "app/assets/javascripts/admin/all.js", "//= require admin/spree_wishlist\n"
       end
 
       def add_stylesheets

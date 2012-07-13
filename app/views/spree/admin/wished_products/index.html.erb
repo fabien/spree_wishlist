@@ -1,0 +1,71 @@
+<% render 'spree/admin/shared/product_sub_menu' %>
+<h1><%= t('wished_product_management') %> - 
+  <% if params[:filter] == 'off' %>
+  <%= link_to t('show_active'), admin_wished_products_path %>
+  <% else %>
+  <%= link_to t('show_all'), admin_wished_products_path(:filter => 'off') %>
+  <% end %>
+</h1>
+<% colspan = 6 %>
+<table class="index" id="wishlist">
+  <tr>
+    <th class="user"><%= t('user') %></th>
+    <th class="item_description"><%= t("item_description") %></th>
+    <th class="availability"><%= t("availability") %></th>
+    <th class="price"><%= t("price") %></th>
+    <th class="last_update"><%= t("last_update") %></th>
+    <th class="wish_added"><%= t("wish_added") %></th>
+    <% if SpreeWishlist::Config[:allow_notifications] && colspan += 2 %>
+    <th class="notify"><%= t("notify") %></th>
+    <th class="action"><%= t('action') %></th>
+    <% end %>
+  </tr>
+  <% if @wished_products.size > 0 %>
+    <% @wished_products.each do |wish|
+        wishlist = wish.wishlist
+        variant = wish.variant
+        product = variant.product %>
+    <tr class="<%= cycle('', 'alt') %>">
+      <td class="user">
+        <%= link_to(wishlist.user.try(:email), [:admin, wishlist.user]) %>
+      </td>
+      <td class="item_description">
+        <h4><%= link_to product.name, edit_admin_product_path(product) %></h4>
+        <% unless variant.is_master? %><p><%= variant_options variant %></p><% end %>
+        <%= truncate(product.description, :length => 100, :omission => "...") %>
+      </td>
+      <td class="availability">
+        <%= variant.in_stock? ? t('in_stock') : t('out_of_stock') %>
+      </td>
+      <td class="price">
+        <%= number_to_currency(variant.price) %>
+      </td>
+      <td class="last_update">
+        <%= l wish.variant.updated_at, :format => :long %>
+      </td>
+      <td class="wish_added">
+        <% unless wish.notifiable? %><span style="color: red"><% end -%>
+        <%= l wish.created_at, :format => :long %>
+        <% unless wish.notifiable? %></span><% end -%>
+      </td>
+      <% if SpreeWishlist::Config[:allow_notifications] %>
+      <td class="notify">
+        <%= form_for wish do |f| %>
+          <%= f.check_box :notify %>
+          <%= f.submit t(:update) %>
+        <% end %>
+      </td>
+      <td class="action">
+        <%= mail_to(wishlist.user.try(:email), icon('exclamation') + ' ' + t(:notify), 
+            :subject => product.name + (variant.is_master? ? "" : " - #{variant.options_text}"), :class => 'edit') %>
+      </td>
+      <% end %>
+    </tr>
+    <% end -%>
+  <% else -%>
+		<tr>
+		  <td colspan="<%= colspan %>"><%= t("no_results") %></td>
+		</tr>
+	<% end -%>
+</table>
+<%= paginate @wished_products %>

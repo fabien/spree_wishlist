@@ -1,0 +1,22 @@
+<%= render :partial => 'spree/admin/shared/configuration_menu' %>
+
+<h1><%= t("wishlist_settings.title") %></h1>
+
+<%= form_tag(admin_wishlist_settings_path, :method => :put) do -%>
+  <p>
+    <label><%= t("wishlist_settings.allow_multiple_lists") %>:</label>
+    <%= check_box_tag('preferences[allow_multiple_lists]', "1", SpreeWishlist::Config[:allow_multiple_lists]) %>
+  </p>
+  <p>
+    <label><%= t("wishlist_settings.allow_public_lists") %>:</label>
+    <%= check_box_tag('preferences[allow_public_lists]', "1", SpreeWishlist::Config[:allow_public_lists]) %>
+  </p>
+  <p>
+    <label><%= t("wishlist_settings.allow_notifications") %>:</label>
+    <%= check_box_tag('preferences[allow_notifications]', "1", SpreeWishlist::Config[:allow_notifications]) %>
+  </p>
+  <p class="form-buttons">
+    <%= button t('update') %>
+    <%= t("or") %> <%= link_to t("cancel"), admin_wishlist_settings_url %>
+  </p>
+<% end -%>

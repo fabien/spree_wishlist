@@ -3,3 +3,4 @@ spec/test_app
 Gemfile.lock
 *.swp
 /nbproject/private/
+.DS_Store

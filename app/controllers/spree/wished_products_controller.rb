@@ -9,6 +9,7 @@ class Spree::WishedProductsController < Spree::BaseController
       @wished_product = @wishlist.wished_products.detect {|wp| wp.variant_id == params[:wished_product][:variant_id].to_i }
     else
       @wished_product.wishlist = current_user.wishlist
+      @wished_product.notify   = Spree::Config[:track_inventory_levels] && @wished_product.variant.count_on_hand == 0
       @wished_product.save
     end
 
@@ -23,6 +24,10 @@ class Spree::WishedProductsController < Spree::BaseController
 
     respond_with(@wished_product) do |format|
       format.html { redirect_to wishlist_url(@wished_product.wishlist) }
+      format.js {
+        flash[:notice] = nil
+        render :js => "alert('#{t :updated_successfully}');"
+      }
     end
   end
 

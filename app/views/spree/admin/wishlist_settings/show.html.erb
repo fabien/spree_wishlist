@@ -1,0 +1,22 @@
+<%= render :partial => 'spree/admin/shared/configuration_menu' %>
+
+<h1><%= t("wishlist_settings.title") %></h1>
+
+<table>
+  <tr>
+    <th scope="row"><%= t("wishlist_settings.allow_multiple_lists") %>:</th>
+    <td><%= SpreeWishlist::Config[:allow_multiple_lists] ? t('yes') : t('no') %></td>
+  </tr>
+  <tr>
+    <th scope="row"><%= t("wishlist_settings.allow_public_lists") %>:</th>
+    <td><%= SpreeWishlist::Config[:allow_public_lists] ? t('yes') : t('no') %></td>
+  </tr>
+  <tr>
+    <th scope="row"><%= t("wishlist_settings.allow_notifications") %>:</th>
+    <td><%= SpreeWishlist::Config[:allow_notifications] ? t('yes') : t('no') %></td>
+  </tr>
+</table>
+
+<p>
+  <%= link_to_with_icon('edit', t("edit"), edit_admin_wishlist_settings_path) %>
+</p>

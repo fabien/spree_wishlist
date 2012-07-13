@@ -1,2 +1,3 @@
 #wishlist-form {margin-top: 5px;}
 #wishlist_header h1, #wishlist_header div { float: left; width: 30%; }
+#wishlist .actions, #wishlist .date_added, #wishlist .availability { white-space: nowrap; }

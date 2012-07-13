@@ -1,5 +1,5 @@
 Spree::User.class_eval do
-  has_many :wishlists
+  has_many :wishlists, :dependent => :destroy
 
   def wishlist
     default_wishlist = self.wishlists.first(:conditions => ["is_default = ?", true])
