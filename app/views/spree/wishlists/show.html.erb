@@ -66,7 +66,7 @@
         <%= l wish.created_at, :format => :long %>
       </td>
       <td class="price">
-        <%= number_to_currency(variant.price) %>
+        <%= Spree::Money.new(variant.price).to_s %>
       </td>
       <% if SpreeWishlist::Config[:allow_notifications] %>
       <td class="notify">

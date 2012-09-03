@@ -38,7 +38,7 @@
         <%= variant.in_stock? ? t('in_stock') : t('out_of_stock') %>
       </td>
       <td class="price">
-        <%= number_to_currency(variant.price) %>
+        <%= Spree::Money.new(variant.price).to_s %>
       </td>
       <td class="last_update">
         <%= l wish.variant.updated_at, :format => :long %>
